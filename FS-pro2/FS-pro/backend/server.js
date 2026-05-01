@@ -11,19 +11,12 @@ const app = express();
 // Middleware
 // Updated CORS to explicitly allow your Vercel frontend URL
 // Updated CORS to allow all Vercel deployments for your project
+
+
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl) 
-    // or origins that match your Vercel project domain
-    if (!origin || origin.includes("vercel.app")) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  origin: "*"
 }));
+
 
 app.use(express.json());
 
