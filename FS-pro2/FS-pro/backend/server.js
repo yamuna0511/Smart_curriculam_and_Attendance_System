@@ -9,15 +9,19 @@ dotenv.config();
 const app = express();
 
 // Middleware
-// Updated CORS to be more robust for Vercel
+// Updated CORS to explicitly allow your Vercel frontend URL
 app.use(cors({
-  origin: true, // Allows your Vercel frontend to communicate with the backend
+  origin: [
+    "https://smart-curriculam-and-attendance-system-psrgt1dwh.vercel.app",
+    "https://smart-curriculam-and-attendance-sys.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
 app.use(express.json());
 
 // Database Connection
-// We remove the local '127.0.0.1' fallback to ensure it only uses the Vercel MONGO_URI
 const mongoURI = process.env.MONGO_URI;
 
 mongoose.connect(mongoURI)
