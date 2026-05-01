@@ -8,33 +8,45 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-// Updated CORS to explicitly allow your Vercel frontend URL
-// Updated CORS to allow all Vercel deployments for your project
-
-
+// ✅ Middleware
 app.use(cors({
   origin: "*"
 }));
 
-
 app.use(express.json());
 
-// Database Connection
-const mongoURI = process.env.MONGO_URI;
+// ✅ MongoDB Connection (IMPROVED)
+const connectDB = async () => {
+  try {
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI is not defined in environment variables");
+    }
 
-mongoose.connect(mongoURI)
-.then(() => console.log('MongoDB Connected successfully to Atlas'))
-.catch(err => {
-    console.error('MongoDB Connection Error Details:');
-    console.error(err);
-});
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-// Routes
+    console.log("✅ MongoDB Connected successfully to Atlas");
+  } catch (err) {
+    console.error("❌ MongoDB Connection Error:");
+    console.error(err.message);
+    process.exit(1); // stop server if DB fails
+  }
+};
+
+connectDB();
+
+// ✅ Routes
 app.use('/api', apiRoutes);
 
-// Root route for testing if the backend is alive
-app.get("/", (req, res) => res.send("Smart Campus Server is running"));
+// ✅ Root route
+app.get("/", (req, res) => {
+  res.send("Smart Campus Server is running");
+});
 
+// ✅ Server start
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
