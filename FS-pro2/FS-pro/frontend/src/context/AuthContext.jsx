@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [selectedSemester, setSelectedSemester] = useState('');
 
     // ✅ Correct API Base URL (from environment variable)
-    const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api/auth`;
+    const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
     useEffect(() => {
         const token = localStorage.getItem('token');
