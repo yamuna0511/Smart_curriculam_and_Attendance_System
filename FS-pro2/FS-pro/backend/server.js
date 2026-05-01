@@ -19,21 +19,19 @@ app.use(express.json());
 const connectDB = async () => {
   try {
     if (!process.env.MONGO_URI) {
-      throw new Error("MONGO_URI is not defined in environment variables");
+      throw new Error("MONGO_URI is not defined");
     }
 
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI);
 
     console.log("✅ MongoDB Connected successfully to Atlas");
   } catch (err) {
     console.error("❌ MongoDB Connection Error:");
     console.error(err.message);
-    process.exit(1); // stop server if DB fails
+    process.exit(1);
   }
 };
+
 
 connectDB();
 
