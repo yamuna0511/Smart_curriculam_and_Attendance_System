@@ -9,6 +9,9 @@ export const AuthProvider = ({ children }) => {
     const [selectedDepartment, setSelectedDepartment] = useState('');
     const [selectedSemester, setSelectedSemester] = useState('');
 
+    // Define your production API base URL here for easy updates
+    const API_BASE_URL = 'https://smart-curriculam-and-attendance-system-iikczff19.vercel.app/api/auth';
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         const role = localStorage.getItem('role');
@@ -25,7 +28,8 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
-        const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+        // URL updated from localhost to Vercel production URL
+        const res = await axios.post(`${API_BASE_URL}/login`, { email, password });
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('role', res.data.role);
         localStorage.setItem('name', res.data.name);
@@ -35,7 +39,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (userData) => {
-        const res = await axios.post('http://localhost:5000/api/auth/register', userData);
+        // URL updated from localhost to Vercel production URL
+        const res = await axios.post(`${API_BASE_URL}/register`, userData);
         return res.data;
     };
 
