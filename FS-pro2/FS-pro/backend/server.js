@@ -42,7 +42,7 @@ app.use('/api', apiRoutes);
 app.get("/", (req, res) => {
   res.send("Smart Campus Server is running");
 });
-\const createUsers = async () => {
+const createUsers = async () => {
   const bcrypt = require('bcryptjs');
   const User = require('./models/User');
   const Student = require('./models/Student');
