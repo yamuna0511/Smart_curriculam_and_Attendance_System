@@ -42,6 +42,29 @@ app.use('/api', apiRoutes);
 app.get("/", (req, res) => {
   res.send("Smart Campus Server is running");
 });
+const bcrypt = require('bcryptjs');
+const User = require('./models/User');
+
+const createAdmin = async () => {
+  const existing = await User.findOne({ email: 'admin@test.com' });
+
+  if (!existing) {
+    const hash = await bcrypt.hash('password123', 10);
+
+    await User.create({
+      name: 'Admin',
+      email: 'admin@test.com',
+      password: hash,
+      role: 'Admin'
+    });
+
+    console.log("✅ Admin created in Atlas DB");
+  } else {
+    console.log("✅ Admin already exists");
+  }
+};
+
+createAdmin();
 
 // ✅ Server start
 const PORT = process.env.PORT || 5000;
