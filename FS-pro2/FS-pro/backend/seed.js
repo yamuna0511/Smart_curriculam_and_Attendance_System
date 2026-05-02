@@ -1,4 +1,6 @@
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
 const User = require('./models/User');
 
 const createAdmin = async () => {
@@ -12,7 +14,7 @@ const createAdmin = async () => {
         name: 'Admin',
         email: 'admin@test.com',
         password: hash,
-        role: 'Admin'
+        role: 'admin'
       });
 
       console.log("✅ Admin user created");
@@ -20,8 +22,8 @@ const createAdmin = async () => {
       console.log("✅ Admin already exists");
     }
   } catch (err) {
-    console.error(err);
+    console.error("Admin Seed Error:", err.message);
   }
 };
 
-createAdmin();
+module.exports = createAdmin;
