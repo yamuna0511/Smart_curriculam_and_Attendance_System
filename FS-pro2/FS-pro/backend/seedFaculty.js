@@ -25,7 +25,7 @@ const seedFaculty = async () => {
           name: facultyData[i].name,
           email: facultyData[i].email,
           password: hash,
-          role: 'faculty'
+          role: 'Faculty'
         });
 
         await Faculty.create({

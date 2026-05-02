@@ -39,7 +39,7 @@ const seedStudents = async () => {
           name: studentsData[i].name,
           email: studentsData[i].email,
           password: hash,
-          role: 'student'
+          role: 'Student'
         });
 
         await Student.create({
