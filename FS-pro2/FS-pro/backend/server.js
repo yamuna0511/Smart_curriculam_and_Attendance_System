@@ -42,29 +42,67 @@ app.use('/api', apiRoutes);
 app.get("/", (req, res) => {
   res.send("Smart Campus Server is running");
 });
-const bcrypt = require('bcryptjs');
-const User = require('./models/User');
+\const createUsers = async () => {
+  const bcrypt = require('bcryptjs');
+  const User = require('./models/User');
+  const Student = require('./models/Student');
+  const Faculty = require('./models/Faculty');
 
-const createAdmin = async () => {
-  const existing = await User.findOne({ email: 'admin@test.com' });
+  const hash = await bcrypt.hash('password123', 10);
 
-  if (!existing) {
-    const hash = await bcrypt.hash('password123', 10);
-
+  // ✅ Admin
+  if (!(await User.findOne({ email: 'admin@test.com' }))) {
     await User.create({
       name: 'Admin',
       email: 'admin@test.com',
       password: hash,
       role: 'Admin'
     });
+    console.log("✅ Admin created");
+  }
 
-    console.log("✅ Admin created in Atlas DB");
-  } else {
-    console.log("✅ Admin already exists");
+  // ✅ Faculty
+  let facultyUser = await User.findOne({ email: 'faculty@test.com' });
+  if (!facultyUser) {
+    facultyUser = await User.create({
+      name: 'Faculty User',
+      email: 'faculty@test.com',
+      password: hash,
+      role: 'Faculty'
+    });
+
+    await Faculty.create({
+      user: facultyUser._id,
+      employeeId: 'FAC001',
+      department: 'CS',
+      subjects: ['Math', 'Programming']
+    });
+
+    console.log("✅ Faculty created");
+  }
+
+  // ✅ Student
+  let studentUser = await User.findOne({ email: 'student_CS1@test.com' });
+  if (!studentUser) {
+    studentUser = await User.create({
+      name: 'Student_CS1',
+      email: 'student_CS1@test.com',
+      password: hash,
+      role: 'Student'
+    });
+
+    await Student.create({
+      user: studentUser._id,
+      enrollmentNumber: 'STU001',
+      department: 'CS',
+      semester: 1
+    });
+
+    console.log("✅ Student created");
   }
 };
 
-createAdmin();
+createUsers();
 
 // ✅ Server start
 const PORT = process.env.PORT || 5000;
